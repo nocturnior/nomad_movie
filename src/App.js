@@ -5,33 +5,33 @@ import Router from './Router';
 // components
 import Button from './components/Button';
 
+// Destroy 함수 : 컴포넌트가 파괴될때 뭔가 하는고~
+const Hello = () => {
+  function byeFn() {
+    console.log('🚀 ⁝ byeFn ⁝ bye');
+  }
+
+  function hiFn() {
+    console.log('🚀 ⁝ hiFn ⁝ hi');
+    return byeFn;
+  }
+
+  useEffect(hiFn, []);
+  return <h1>헬로잉~</h1>
+};
+
 const App = () => {
-  const [counter, setValue] = React.useState(0);
-  const [keyword, setKeyword] = React.useState('');
-
-  const onClick = () => setValue(prev => prev + 1);
-  const onChange = e => {
-    setKeyword(e.target.value);
+  const [showing, setShowing] = React.useState(false);
+  const onClick = () => {
+    // setShowingd을 통해 이전 value를 받아온 담에, 그 value의 반댓값을 리턴
+    setShowing(prev => !prev);
   };
-
-  console.log('계속 실행하겟다!');
-
-  useEffect(() => {
-    console.log('에이피아이 불러오기!');
-    // 검색api이용할때 한번만 불러오고싶음~ 다른거할때는 안변화햇으면 좋겟ㅇ
-  }, []);
-  useEffect(() => {
-    if (keyword !== '' && keyword.length > 5) {
-      console.log('SEARCH', keyword);
-    }
-  }, [keyword]); // keyword가 변할때마다 실행~
 
   return (
     <>
       {/* <Router /> */}
-      <input onChange={onChange} type='text' placeholder='검색' value={keyword} />
-      <h1 className={styles.title}>{counter}</h1>
-      <Button onClick={onClick} text={'버튼!!'} />
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? 'Hide' : 'Show'}</button>
     </>
   );
 };
