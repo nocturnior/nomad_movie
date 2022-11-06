@@ -1,39 +1,36 @@
-import React, { useEffect } from 'react';
-import styles from './App.module.css';
-import Router from './Router';
+import React, { useState } from 'react';
 
-// components
-import Button from './components/Button';
+const Todo = () => {
+  const [todo, setTodo] = useState('');
+  const [todos, setTodos] = useState([]);
 
-// Destroy 함수 : 컴포넌트가 파괴될때 뭔가 하는고~
-const Hello = () => {
-  function byeFn() {
-    console.log('🚀 ⁝ byeFn ⁝ bye');
-  }
+  const onChange = e => {
+    setTodo(e.target.value);
+  };
 
-  function hiFn() {
-    console.log('🚀 ⁝ hiFn ⁝ hi');
-    return byeFn;
-  }
-
-  useEffect(hiFn, []);
-  return <h1>헬로잉~</h1>
-};
-
-const App = () => {
-  const [showing, setShowing] = React.useState(false);
-  const onClick = () => {
-    // setShowingd을 통해 이전 value를 받아온 담에, 그 value의 반댓값을 리턴
-    setShowing(prev => !prev);
+  const onSubmit = e => {
+    e.preventDefault();
+    if (todo === '') {
+      return;
+    }
+    setTodos(currentArr => [todo, ...currentArr]);
+    setTodo('');
   };
 
   return (
     <>
-      {/* <Router /> */}
-      {showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing ? 'Hide' : 'Show'}</button>
+      <h1>내할일({todos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input onChange={onChange} value={todo} type='text' placeholder='쓰쇼' />
+        <button>추가하쇼</button>
+      </form>
+      <ul>
+        {todos.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </>
   );
 };
 
-export default App;
+export default Todo;
